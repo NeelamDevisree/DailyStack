@@ -11,6 +11,8 @@ import withdrawalsRoutes from './routes/withdrawals.js';
 import carryOverRoutes from './routes/carry-over.js';
 import monthSetupRoutes from './routes/month-setup.js';
 import archiveRoutes from './routes/archive.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +34,16 @@ app.use('/api/month-setup', monthSetupRoutes);
 app.use('/api/archive', archiveRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Serve Angular build
+app.use(express.static(path.join(__dirname, '../../client/dist/dailystack/browser')));
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../../client/dist/dailystack/browser/index.html'));
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`DailyStack server running on port ${PORT}`);
