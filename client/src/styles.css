@@ -66,6 +66,11 @@ input, select { font-family: var(--font-sans); }
 .btn-primary { padding: 15px; background: var(--text); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; transition: opacity 0.15s; }
 .btn-primary:disabled { opacity: 0.5; }
 .btn-secondary { padding: 13px; background: transparent; color: var(--text-muted); border: none; font-size: 14px; width: 100%; cursor: pointer; }
+.btn-danger { padding: 15px; background: var(--red); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; transition: opacity 0.15s; }
+.btn-danger:disabled { opacity: 0.5; }
+.danger-divider { height: 1px; background: var(--border); margin: 8px 0 16px; }
+.danger-note { font-size: 12px; color: var(--text-faint); text-align: center; margin-top: 4px; }
+.delete-warning { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px; }
 
 /* Chip styles */
 .chip-grid { display: flex; flex-wrap: wrap; gap: 7px; }

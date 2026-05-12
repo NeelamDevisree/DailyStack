@@ -29,6 +29,9 @@ export class DashboardComponent implements OnInit {
   stAllowance = ''; stSaving = false; stError = '';
   canChangeAllowance = true; nextChangeDate = '';
 
+  // Delete account
+  showDeleteConfirm = false; deletePassword = ''; deleteError = ''; deleting = false;
+
   DAYS = DAYS;
   PAYMENT_MODES = ['Account', 'Cash', 'Credit Card'];
   DEFAULT_CATEGORIES = ['Food & Drink','Transport','Groceries','Health','Gym & Fitness','Personal Care','Shopping','Entertainment','Subscriptions','Miscellaneous'];
@@ -216,6 +219,24 @@ export class DashboardComponent implements OnInit {
       this.showLogExpense = false;
       this.showWithdraw = false;
       this.showSettings = false;
+    }
+  }
+
+  closeDeleteConfirm(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
+      this.showDeleteConfirm = false;
+    }
+  }
+
+  async confirmDeleteAccount() {
+    if (!this.deletePassword) { this.deleteError = 'Password is required'; return; }
+    this.deleting = true;
+    this.deleteError = '';
+    try {
+      await this.auth.deleteAccount(this.deletePassword);
+    } catch (err: any) {
+      this.deleteError = err?.error?.error || 'Failed to delete account';
+      this.deleting = false;
     }
   }
 

@@ -47,6 +47,24 @@ export class AuthService {
     this.setSession(res);
   }
 
+  async forgotPassword(email: string): Promise<string> {
+    const res = await firstValueFrom(this.http.post<{ message: string }>('/api/auth/forgot-password', { email }));
+    return res.message;
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<string> {
+    const res = await firstValueFrom(this.http.post<{ message: string }>('/api/auth/reset-password', { token, newPassword }));
+    return res.message;
+  }
+
+  async deleteAccount(password: string): Promise<void> {
+    await firstValueFrom(this.http.delete('/api/auth/delete-account', { body: { password } }));
+    localStorage.removeItem('ds_token');
+    localStorage.removeItem('ds_user');
+    this.user$.next(null);
+    this.router.navigate(['/auth']);
+  }
+
   signOut(): void {
     localStorage.removeItem('ds_token');
     localStorage.removeItem('ds_user');

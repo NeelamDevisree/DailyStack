@@ -201,6 +201,30 @@
           <button class="btn-primary" (click)="saveSettings()" [disabled]="stSaving">{{ stSaving ? 'Saving…' : 'Save' }}</button>
         }
         <button class="btn-secondary" (click)="signOut()">Log Out</button>
+
+        <div class="danger-divider"></div>
+        <button class="btn-danger" (click)="showDeleteConfirm = true; showSettings = false">Delete Account</button>
+        <div class="danger-note">Permanently deletes all your data.</div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Account Confirmation Modal -->
+@if (showDeleteConfirm) {
+  <div class="modal-overlay" (click)="closeDeleteConfirm($event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" style="color:var(--red)">Delete Account</div>
+      <div class="modal-body">
+        <p class="delete-warning">This will permanently delete your account and all data. This action cannot be undone.</p>
+        <div class="field">
+          <label class="label">Enter your password to confirm</label>
+          <input class="input" type="password" placeholder="Password" [(ngModel)]="deletePassword" />
+        </div>
+        @if (deleteError) { <div class="error-box">{{ deleteError }}</div> }
+        <button class="btn-danger" (click)="confirmDeleteAccount()" [disabled]="deleting || !deletePassword">{{ deleting ? 'Deleting…' : 'Delete My Account' }}</button>
+        <button class="btn-secondary" (click)="showDeleteConfirm = false">Cancel</button>
       </div>
     </div>
   </div>

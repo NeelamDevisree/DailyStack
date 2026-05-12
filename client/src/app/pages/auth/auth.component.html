@@ -21,12 +21,26 @@
       <input class="input" type="password" [(ngModel)]="password" name="password" placeholder="min. 6 characters" required minlength="6" />
     </div>
 
+    @if (mode === 'signin' && !showForgot) {
+      <button type="button" class="forgot-link" (click)="showForgot = true">Forgot password?</button>
+    }
+
     @if (error) {
       <div class="error-box">{{ error }}</div>
     }
+    @if (forgotSuccess) {
+      <div class="success-box">{{ forgotSuccess }}</div>
+    }
 
-    <button class="btn-primary" type="submit" [disabled]="loading">
-      {{ loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account' }}
-    </button>
+    @if (showForgot) {
+      <button class="btn-primary" type="button" (click)="sendResetLink()" [disabled]="loading">
+        {{ loading ? 'Sending…' : 'Send Reset Link' }}
+      </button>
+      <button type="button" class="forgot-link" (click)="showForgot = false; forgotSuccess = ''">← Back to Sign In</button>
+    } @else {
+      <button class="btn-primary" type="submit" [disabled]="loading">
+        {{ loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account' }}
+      </button>
+    }
   </form>
 </div>

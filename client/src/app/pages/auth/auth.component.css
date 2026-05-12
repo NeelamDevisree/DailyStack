@@ -9,3 +9,6 @@
 .tab, .tab-active { flex: 1; padding: 10px; border: none; border-radius: 9px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
 .tab { background: transparent; color: var(--text-muted); }
 .tab-active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.forgot-link { background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; padding: 0; text-align: right; margin-top: -6px; }
+.forgot-link:hover { color: var(--text); }
+.success-box { background: var(--green-bg); color: var(--green); font-size: 13px; padding: 10px 14px; border-radius: 10px; }

@@ -16,6 +16,8 @@ export class AuthComponent {
   password = '';
   error = '';
   loading = false;
+  showForgot = false;
+  forgotSuccess = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -32,6 +34,24 @@ export class AuthComponent {
       }
     } catch (err: any) {
       this.error = err?.error?.error || err?.message || 'Something went wrong';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async sendResetLink() {
+    this.error = '';
+    this.forgotSuccess = '';
+    if (!this.email) {
+      this.error = 'Enter your email address';
+      return;
+    }
+    this.loading = true;
+    try {
+      const msg = await this.auth.forgotPassword(this.email);
+      this.forgotSuccess = msg;
+    } catch (err: any) {
+      this.error = err?.error?.error || 'Failed to send reset link';
     } finally {
       this.loading = false;
     }
