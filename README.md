@@ -322,17 +322,3 @@ Daily allowance can only be changed **once every 14 days**. The Settings screen 
 In the **Expenses** tab, tap **Export CSV** to download all expenses from the 1st of the current month to today.
 
 Columns: `Date, Time, Description, Category, Amount, Payment Mode`
-
----
-
-## Key Differences from Original
-
-| Feature | Original (React + Supabase) | This Version (Angular + Node.js) |
-|---|---|---|
-| Frontend | React 18 + Vite | Angular 19 |
-| Backend | Supabase (hosted) | Node.js + Express |
-| Database | PostgreSQL (Supabase) | SQLite (file-based) |
-| Auth | Supabase Auth | JWT + bcrypt |
-| Hosting | Vercel (frontend only) | Single server (API + static) |
-| PWA | vite-plugin-pwa | @angular/service-worker |
-| Config | Supabase env vars | JWT_SECRET only |
