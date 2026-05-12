@@ -1,0 +1,32 @@
+<div class="page">
+  <div class="top">
+    <div class="logo">DS</div>
+    <h1 class="title">DailyStack</h1>
+    <p class="sub">Spend smart. Stack habits. Save real.</p>
+  </div>
+
+  <form class="form" (ngSubmit)="submit()">
+    <div class="tabs">
+      <button type="button" [class]="mode === 'signin' ? 'tab-active' : 'tab'" (click)="mode='signin'">Sign In</button>
+      <button type="button" [class]="mode === 'signup' ? 'tab-active' : 'tab'" (click)="mode='signup'">Sign Up</button>
+    </div>
+
+    <div class="field">
+      <label class="label">Email</label>
+      <input class="input" type="email" [(ngModel)]="email" name="email" placeholder="you@email.com" required />
+    </div>
+
+    <div class="field">
+      <label class="label">Password</label>
+      <input class="input" type="password" [(ngModel)]="password" name="password" placeholder="min. 6 characters" required minlength="6" />
+    </div>
+
+    @if (error) {
+      <div class="error-box">{{ error }}</div>
+    }
+
+    <button class="btn-primary" type="submit" [disabled]="loading">
+      {{ loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account' }}
+    </button>
+  </form>
+</div>

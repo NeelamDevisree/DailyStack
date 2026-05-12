@@ -1,0 +1,207 @@
+@if (loading) {
+  <div class="loading">loading...</div>
+} @else if (data) {
+  <div class="page">
+    <div class="header">
+      <div>
+        <div class="app-name">DailyStack</div>
+        <div class="month">{{ monthLabel }}</div>
+      </div>
+      <button class="settings-btn" (click)="openSettings()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Today's Balance</div>
+        <div class="stat-value" [style.color]="statColor(data.todayBalance)">{{ statDisplay(data.todayBalance) }}</div>
+        <div class="stat-sub">of {{ fmt(data.allowance) }} allowance</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Daily Savings</div>
+        <div class="stat-value" [style.color]="statColor(data.dailySavings)">{{ statDisplay(data.dailySavings) }}</div>
+        <div class="stat-sub">this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Rewards</div>
+        <div class="stat-value" [style.color]="statColor(data.totalRewards)">{{ statDisplay(data.totalRewards) }}</div>
+        <div class="stat-sub">habits net</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Expenses</div>
+        <div class="stat-value" style="color:var(--red)">{{ statDisplay(-data.totalExpenses, true) }}</div>
+        <div class="stat-sub">this month</div>
+      </div>
+      <div class="stat-card wide">
+        <div class="stat-label">Total Savings</div>
+        <div class="stat-value" [style.color]="statColor(data.totalSavings)">{{ statDisplay(data.totalSavings) }}</div>
+        <div class="stat-sub">incl. carry-over</div>
+      </div>
+    </div>
+
+    <!-- Withdraw Row -->
+    <div class="withdraw-row">
+      <div>
+        <div class="withdraw-label">Available to Withdraw</div>
+        <div class="withdraw-val">{{ fmt(data.availableToWithdraw) }}</div>
+      </div>
+      <button class="withdraw-btn" (click)="openWithdraw()" [disabled]="data.availableToWithdraw <= 0">Withdraw</button>
+    </div>
+
+    <!-- Today's Habits -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">Today's Habits</span>
+        <span class="section-meta">{{ doneCount() }}/{{ data.todayHabits.length }} done</span>
+      </div>
+      @if (data.todayHabits.length === 0) {
+        <div class="empty">No habits scheduled today</div>
+      } @else {
+        @for (habit of data.todayHabits; track habit.id) {
+          <div class="habit-row" (click)="toggleHabit(habit)">
+            <div [class]="'habit-check ' + (getHabitStatus(habit) === 'done' ? 'check-done' : getHabitStatus(habit) === 'missed' ? 'check-missed' : '')">
+              @if (getHabitStatus(habit) === 'done') {
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              }
+              @if (getHabitStatus(habit) === 'missed') {
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              }
+            </div>
+            <div class="habit-info">
+              <div class="habit-name">{{ habit.name }}</div>
+              <div class="habit-days">{{ daysLabel(habit.days) }}</div>
+            </div>
+            <div [class]="'habit-badge ' + (getHabitStatus(habit) === 'done' ? 'badge-done' : getHabitStatus(habit) === 'missed' ? 'badge-missed' : 'badge-pending')">
+              {{ getHabitBadge(habit) }}
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Today's Expenses -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">Today's Expenses</span>
+        <span class="section-meta">{{ fmt(data.todaySpent) }} spent</span>
+      </div>
+      @if (data.todayExpenses.length === 0) {
+        <div class="empty">Nothing logged yet</div>
+      } @else {
+        @for (e of data.todayExpenses; track e.id) {
+          <div class="expense-row">
+            <div>
+              <div class="expense-name">{{ e.description }}</div>
+              <div class="expense-meta">{{ e.category }} · {{ e.payment_mode }} · {{ getExpenseTime(e) }}</div>
+            </div>
+            <div class="expense-amt">−{{ fmt(e.amount) }}</div>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- FAB -->
+    <button class="fab" (click)="openLogExpense()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+}
+
+<!-- Log Expense Modal -->
+@if (showLogExpense) {
+  <div class="modal-overlay" (click)="closeOverlay($event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Log Expense</div>
+      <div class="modal-body">
+        <div class="field">
+          <label class="label">What did you spend on?</label>
+          <input class="input" type="text" placeholder="e.g. Tea, Lunch, Auto…" [(ngModel)]="expDesc" />
+        </div>
+        <div class="field">
+          <label class="label">Amount (₹)</label>
+          <input class="input" type="number" inputmode="decimal" placeholder="0" [(ngModel)]="expAmount" />
+        </div>
+        <div class="field">
+          <label class="label">Category</label>
+          <div class="chip-grid">
+            @for (c of expCategories; track c) {
+              <button type="button" [class]="expCategory === c ? 'chip-active' : 'chip'" (click)="expCategory = c">{{ c }}</button>
+            }
+            <button type="button" class="chip-add" (click)="showAddCat = !showAddCat">+ Add</button>
+          </div>
+          @if (showAddCat) {
+            <div class="add-cat-row">
+              <input class="input" type="text" placeholder="Category name" [(ngModel)]="newCat" (keydown.enter)="addCategory()" />
+              <button class="add-cat-btn" (click)="addCategory()">Add</button>
+            </div>
+          }
+        </div>
+        <div class="field">
+          <label class="label">Payment Mode</label>
+          <div class="segmented">
+            @for (m of PAYMENT_MODES; track m) {
+              <button type="button" [class]="expPaymentMode === m ? 'seg-active' : 'seg'" (click)="expPaymentMode = m">{{ m }}</button>
+            }
+          </div>
+        </div>
+        @if (expError) { <div class="error-box">{{ expError }}</div> }
+        <button class="btn-primary" (click)="saveExpense()" [disabled]="expSaving">{{ expSaving ? 'Saving…' : 'Add Expense' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Withdraw Modal -->
+@if (showWithdraw) {
+  <div class="modal-overlay" (click)="closeOverlay($event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Withdraw Savings</div>
+      <div class="modal-body">
+        <p class="wd-note">Rewards are depleted first, then Daily Savings.</p>
+        <div class="wd-available">{{ fmt(data.availableToWithdraw) }} available</div>
+        <div class="field">
+          <label class="label">Amount (₹)</label>
+          <input class="input" type="number" inputmode="decimal" placeholder="0" [(ngModel)]="wdAmount" />
+        </div>
+        @if (wdAmountNum > 0) {
+          <div class="wd-breakdown">
+            <div class="wd-row"><span>From Rewards</span><span class="wd-val">{{ fmt(wdRewardsPortion) }}</span></div>
+            <div class="wd-row"><span>From Daily Savings</span><span class="wd-val">{{ fmt(wdSavingsPortion) }}</span></div>
+          </div>
+        }
+        @if (wdError) { <div class="error-box">{{ wdError }}</div> }
+        <button class="btn-primary" (click)="saveWithdraw()" [disabled]="wdSaving">{{ wdSaving ? 'Processing…' : 'Confirm Withdrawal' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Settings Modal -->
+@if (showSettings) {
+  <div class="modal-overlay" (click)="closeOverlay($event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Settings</div>
+      <div class="modal-body">
+        <div class="field">
+          <label class="label">Daily Allowance (₹)</label>
+          <input class="input" type="number" inputmode="decimal" [(ngModel)]="stAllowance" [disabled]="!canChangeAllowance" />
+          @if (!canChangeAllowance) {
+            <div class="note-box">⚠ Next change available: {{ nextChangeDate }}</div>
+          }
+        </div>
+        @if (stError) { <div class="error-box">{{ stError }}</div> }
+        @if (canChangeAllowance) {
+          <button class="btn-primary" (click)="saveSettings()" [disabled]="stSaving">{{ stSaving ? 'Saving…' : 'Save' }}</button>
+        }
+        <button class="btn-secondary" (click)="signOut()">Log Out</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,93 @@
+@if (loading) {
+  <div class="loading">loading...</div>
+} @else {
+  <div class="page">
+    <div class="header">
+      <div class="app-name">Habits</div>
+      <div class="month">Manage & History</div>
+    </div>
+
+    <!-- Manage -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">Active Habits</span>
+        <span class="section-meta">{{ habits.length }}/{{ MAX_HABITS }}</span>
+      </div>
+
+      @for (h of habits; track h.id) {
+        <div class="manage-row">
+          <div>
+            <div class="manage-name">{{ h.name }}</div>
+            <div class="manage-days">{{ daysLabel(h.days) }}</div>
+          </div>
+          <button class="delete-btn" (click)="deleteHabit(h.id)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      }
+
+      @if (habits.length < MAX_HABITS && !showAdd) {
+        <button class="add-btn" (click)="showAdd = true">+ Add Habit</button>
+      }
+
+      @if (showAdd) {
+        <div class="add-form">
+          <div class="field">
+            <label class="label">Habit Name</label>
+            <input class="input" type="text" placeholder="e.g. Meditate, Walk…" [(ngModel)]="newName" (keydown.enter)="addHabit()" />
+          </div>
+          <div class="field">
+            <label class="label">Repeat on</label>
+            <div class="day-row">
+              @for (d of DAYS; track d; let i = $index) {
+                <button type="button" [class]="newDays.includes(i) ? 'day-on' : 'day-off'" (click)="toggleDay(i)">{{ d.charAt(0) }}</button>
+              }
+            </div>
+          </div>
+          @if (error) { <div class="error-box">{{ error }}</div> }
+          <div style="display:flex;gap:8px">
+            <button class="save-btn" (click)="addHabit()">Save</button>
+            <button class="cancel-btn" (click)="showAdd = false; error = ''">Cancel</button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- History -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">History</span>
+      </div>
+
+      @for (date of allDates; track date) {
+        @if (getDayHabits(date).length > 0 || date === today) {
+          <div class="history-group">
+            <div class="history-date">{{ dateLabel(date) }}</div>
+            @if (getDayHabits(date).length === 0) {
+              <div class="no-habits">No habits scheduled</div>
+            } @else {
+              @for (habit of getDayHabits(date); track habit.id) {
+                <div class="history-row">
+                  <div [class]="'hist-check ' + (getStatus(habit, date) === 'done' ? 'h-done' : getStatus(habit, date) === 'missed' ? 'h-missed' : '')">
+                    @if (getStatus(habit, date) === 'done') {
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    }
+                    @if (getStatus(habit, date) === 'missed') {
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    }
+                  </div>
+                  <div class="hist-name">{{ habit.name }}</div>
+                  <div [class]="'hist-badge ' + (getStatus(habit, date) === 'done' ? 'b-done' : getStatus(habit, date) === 'missed' ? 'b-missed' : 'b-pending')">
+                    {{ getBadge(habit, date) }}
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+}

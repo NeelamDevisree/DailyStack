@@ -1,0 +1,30 @@
+:host { display: block; }
+.page { padding-bottom: 80px; }
+.header { padding: 52px 20px 16px; }
+.app-name { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 2px; }
+.month { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
+.section { padding: 0 16px; margin-bottom: 14px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.section-title { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+.section-meta { font-size: 11px; color: var(--text-faint); font-family: var(--font-mono); }
+.manage-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.manage-name { font-size: 14px; font-weight: 500; }
+.manage-days { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+.delete-btn { width: 30px; height: 30px; background: var(--red-bg); border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--red); flex-shrink: 0; }
+.add-btn { width: 100%; padding: 13px; background: var(--surface); border: 1.5px dashed var(--border); border-radius: 12px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; text-align: center; }
+.add-form { background: var(--surface); border-radius: 13px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.save-btn { flex: 1; padding: 11px; background: var(--text); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.cancel-btn { flex: 1; padding: 11px; background: var(--surface2); color: var(--text-muted); border: none; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.divider { height: 1px; background: var(--border); margin: 4px 16px 14px; }
+.history-group { margin-bottom: 16px; }
+.history-date { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; padding: 0 2px; }
+.no-habits { font-size: 13px; color: var(--text-faint); padding: 8px 2px; }
+.history-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.hist-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.h-done { background: var(--green); border-color: var(--green); }
+.h-missed { background: var(--red-bg); border-color: var(--red); }
+.hist-name { font-size: 14px; font-weight: 500; flex: 1; }
+.hist-badge { font-family: var(--font-mono); font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.b-done { background: var(--green-bg); color: var(--green); }
+.b-missed { background: var(--red-bg); color: var(--red); }
+.b-pending { background: var(--surface); color: var(--text-faint); }

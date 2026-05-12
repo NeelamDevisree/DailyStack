@@ -1,0 +1,12 @@
+:host { display: block; }
+.page { padding-bottom: 80px; }
+.header { padding: 52px 20px 16px; }
+.app-name { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 2px; }
+.month { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
+.empty { text-align: center; padding: 60px 20px; color: var(--text-faint); font-size: 14px; line-height: 1.6; }
+.card { margin: 0 16px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.card-month { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
+.row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--surface2); }
+.row:last-child { border-bottom: none; }
+.row-key { font-size: 13px; color: var(--text-muted); }
+.row-val { font-family: var(--font-mono); font-size: 13px; }

@@ -1,0 +1,20 @@
+:host { display: block; height: 100dvh; }
+.shell { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+.content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+.nav { display: flex; background: var(--card); border-top: 1px solid var(--border); height: var(--nav-h); flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.nav-item, .nav-item-active { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: none; background: none; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: color 0.15s; padding: 8px 0; }
+.nav-item { color: var(--text-faint); }
+.nav-item-active { color: var(--text); }
+
+/* Month setup overlay */
+.month-setup-overlay { position: fixed; inset: 0; background: rgba(26,23,20,0.55); z-index: 300; display: flex; align-items: flex-end; justify-content: center; }
+.month-setup-sheet { background: var(--card); border-radius: 20px 20px 0 0; padding: 20px 20px calc(32px + env(safe-area-inset-bottom,0px)); width: 100%; max-width: 430px; max-height: 92dvh; overflow-y: auto; }
+.ms-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+.ms-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+.ms-body { display: flex; flex-direction: column; gap: 16px; }
+.habit-list { display: flex; flex-direction: column; gap: 8px; }
+.habit-row { background: var(--surface); border-radius: 11px; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; }
+.habit-name { font-size: 14px; font-weight: 500; }
+.habit-days { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+.delete-btn { background: var(--red-bg); color: var(--red); border: none; border-radius: 6px; width: 26px; height: 26px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.add-section { background: var(--surface); border-radius: 13px; padding: 13px; display: flex; flex-direction: column; gap: 10px; }

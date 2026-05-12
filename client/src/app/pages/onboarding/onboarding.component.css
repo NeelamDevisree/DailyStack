@@ -1,0 +1,17 @@
+:host { display: block; }
+.page { min-height: 100dvh; display: flex; flex-direction: column; padding: 60px 24px 40px; background: var(--bg); }
+.header { margin-bottom: 36px; }
+.step-indicator { display: flex; gap: 6px; margin-bottom: 20px; }
+.dot { width: 24px; height: 4px; border-radius: 2px; background: var(--text); }
+.dot-inactive { width: 24px; height: 4px; border-radius: 2px; background: var(--border); }
+.title { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); margin-bottom: 6px; }
+.sub { font-size: 14px; color: var(--text-muted); }
+.body { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+.habit-list { display: flex; flex-direction: column; gap: 8px; }
+.habit-chip { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; }
+.chip-name { font-size: 14px; font-weight: 500; }
+.chip-days { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+.remove-btn { background: var(--red-bg); color: var(--red); border: none; border-radius: 6px; width: 26px; height: 26px; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.add-habit { background: var(--surface); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.add-btn { padding: 11px; background: var(--card); border: 1.5px dashed var(--border); border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--text-muted); width: 100%; cursor: pointer; }
+.add-btn:disabled { opacity: 0.4; }

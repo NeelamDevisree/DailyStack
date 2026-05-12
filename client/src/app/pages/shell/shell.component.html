@@ -1,0 +1,80 @@
+<div class="shell">
+  <div class="content">
+    <router-outlet />
+  </div>
+
+  <nav class="nav">
+    @for (item of navItems; track item.path) {
+      <button [class]="isActive(item.path) ? 'nav-item-active' : 'nav-item'" (click)="router.navigate([item.path])">
+        <!-- Icons inline -->
+        @if (item.icon === 'dashboard') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" [attr.stroke-width]="isActive(item.path) ? 2.5 : 2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        }
+        @if (item.icon === 'expenses') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" [attr.stroke-width]="isActive(item.path) ? 2.5 : 2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
+        }
+        @if (item.icon === 'habits') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" [attr.stroke-width]="isActive(item.path) ? 2.5 : 2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        }
+        @if (item.icon === 'archive') {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" [attr.stroke-width]="isActive(item.path) ? 2.5 : 2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        }
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </nav>
+</div>
+
+<!-- Month setup modal -->
+@if (showMonthSetup) {
+  <div class="month-setup-overlay">
+    <div class="month-setup-sheet">
+      <div class="modal-handle"></div>
+      <div class="ms-title">New Month Setup</div>
+      <p class="ms-sub">Review and update your allowance and habits for {{ monthLabel }}.</p>
+
+      <div class="ms-body">
+        <div class="field">
+          <label class="label">Daily Allowance (₹)</label>
+          <input class="input" type="number" inputmode="decimal" [(ngModel)]="allowance" />
+        </div>
+
+        <div class="field">
+          <label class="label">Active Habits ({{ activeHabits.length }}/{{ MAX_HABITS }})</label>
+          <div class="habit-list">
+            @for (h of activeHabits; track h.id) {
+              <div class="habit-row">
+                <div>
+                  <div class="habit-name">{{ h.name }}</div>
+                  <div class="habit-days">{{ daysLabel(h.days) }}</div>
+                </div>
+                <button class="delete-btn" (click)="deleteHabit(h.id)">×</button>
+              </div>
+            }
+          </div>
+        </div>
+
+        @if (activeHabits.length < MAX_HABITS) {
+          <div class="add-section">
+            <div class="field">
+              <label class="label">Add Habit</label>
+              <input class="input" type="text" placeholder="Habit name" [(ngModel)]="habitName" (keydown.enter)="addHabit()" />
+            </div>
+            <div class="field">
+              <label class="label">Days</label>
+              <div class="day-row">
+                @for (d of DAYS; track d; let i = $index) {
+                  <button type="button" [class]="habitDays.includes(i) ? 'day-on' : 'day-off'" (click)="toggleDay(i)">{{ d.charAt(0) }}</button>
+                }
+              </div>
+            </div>
+            <button class="btn-primary" style="padding:10px;font-size:13px" (click)="addHabit()" [disabled]="!habitName.trim()">+ Add Habit</button>
+          </div>
+        }
+
+        @if (error) { <div class="error-box">{{ error }}</div> }
+        <button class="btn-primary" (click)="saveMonthSetup()" [disabled]="saving">{{ saving ? 'Saving…' : 'Start Month →' }}</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,26 @@
+@if (loading) {
+  <div class="loading">loading...</div>
+} @else {
+  <div class="page">
+    <div class="header">
+      <div class="app-name">Archive</div>
+      <div class="month">Previous Months</div>
+    </div>
+
+    @if (archives.length === 0) {
+      <div class="empty">No previous months yet.<br/>Check back after your first month reset.</div>
+    } @else {
+      @for (a of archives; track a.id) {
+        <div class="card">
+          <div class="card-month">{{ getMonthLabel(a.month) }}</div>
+          <div class="row"><span class="row-key">Daily Allowance</span><span class="row-val">{{ fmt(a.daily_allowance) }}</span></div>
+          <div class="row"><span class="row-key">Total Expenses</span><span class="row-val" style="color:var(--red)">−{{ fmt(a.total_expenses) }}</span></div>
+          <div class="row"><span class="row-key">Daily Savings</span><span class="row-val" [style.color]="a.daily_savings >= 0 ? 'var(--green)' : 'var(--red)'">{{ a.daily_savings >= 0 ? '+' : '' }}{{ fmt(a.daily_savings) }}</span></div>
+          <div class="row"><span class="row-key">Total Rewards</span><span class="row-val" [style.color]="a.total_rewards >= 0 ? 'var(--green)' : 'var(--red)'">{{ a.total_rewards >= 0 ? '+' : '−' }}{{ fmt(a.total_rewards < 0 ? -a.total_rewards : a.total_rewards) }}</span></div>
+          <div class="row"><span class="row-key">Withdrawn</span><span class="row-val" style="color:var(--text-muted)">{{ fmt(a.total_withdrawn) }}</span></div>
+          <div class="row"><span class="row-key">Carried Over</span><span class="row-val" style="color:var(--green);font-weight:600">+{{ fmt(a.carry_over) }}</span></div>
+        </div>
+      }
+    }
+  </div>
+}

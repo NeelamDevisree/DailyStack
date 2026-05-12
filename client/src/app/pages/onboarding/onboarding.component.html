@@ -1,0 +1,59 @@
+<div class="page">
+  <div class="header">
+    <div class="step-indicator">
+      <span [class]="step >= 1 ? 'dot' : 'dot-inactive'"></span>
+      <span [class]="step >= 2 ? 'dot' : 'dot-inactive'"></span>
+    </div>
+    <h2 class="title">{{ step === 1 ? 'Set your daily allowance' : 'Add your habits' }}</h2>
+    <p class="sub">{{ step === 1 ? 'How much do you plan to spend per day?' : 'Up to ' + MAX_HABITS + ' habits. You can edit these later.' }}</p>
+  </div>
+
+  @if (step === 1) {
+    <div class="body">
+      <div class="field">
+        <label class="label">Daily Allowance (₹)</label>
+        <input class="input" type="number" inputmode="numeric" placeholder="e.g. 200" [(ngModel)]="allowance" />
+      </div>
+      @if (error) { <div class="error-box">{{ error }}</div> }
+      <button class="btn-primary" (click)="goToStep2()">Continue</button>
+    </div>
+  }
+
+  @if (step === 2) {
+    <div class="body">
+      <div class="habit-list">
+        @for (h of habits; track h.name; let i = $index) {
+          <div class="habit-chip">
+            <div>
+              <div class="chip-name">{{ h.name }}</div>
+              <div class="chip-days">{{ daysLabel(h.days) }}</div>
+            </div>
+            <button class="remove-btn" (click)="removeHabit(i)">×</button>
+          </div>
+        }
+      </div>
+
+      @if (habits.length < MAX_HABITS) {
+        <div class="add-habit">
+          <div class="field">
+            <label class="label">Habit Name</label>
+            <input class="input" type="text" placeholder="e.g. Gym, Read, Meditate…" [(ngModel)]="habitName" (keydown.enter)="addHabit()" />
+          </div>
+          <div class="field">
+            <label class="label">Repeat on</label>
+            <div class="day-row">
+              @for (d of DAYS; track d; let i = $index) {
+                <button type="button" [class]="habitDays.includes(i) ? 'day-on' : 'day-off'" (click)="toggleDay(i)">{{ d.charAt(0) }}</button>
+              }
+            </div>
+          </div>
+          <button class="add-btn" (click)="addHabit()" [disabled]="!habitName.trim()">+ Add Habit</button>
+        </div>
+      }
+
+      @if (error) { <div class="error-box">{{ error }}</div> }
+      <button class="btn-primary" (click)="finish()" [disabled]="saving">{{ saving ? 'Setting up...' : "Let's go →" }}</button>
+      <button class="btn-secondary" (click)="finish()">Skip for now</button>
+    </div>
+  }
+</div>
